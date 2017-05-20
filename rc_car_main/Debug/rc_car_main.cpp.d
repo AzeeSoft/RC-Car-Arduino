@@ -1,0 +1,22 @@
+C:\Users\azizt\AppData\Local\Temp\VMBuilds\rc_car_main\mega_atmega2560\Debug\rc_car_main.cpp.o: \
+ C:\Users\azizt\AppData\Local\Temp\VMBuilds\rc_car_main\mega_atmega2560\Debug\rc_car_main.cpp \
+ C:\Users\azizt\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.17\cores\arduino/arduino.h \
+ C:\Users\azizt\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.17\cores\arduino/binary.h \
+ C:\Users\azizt\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.17\cores\arduino/WCharacter.h \
+ C:\Users\azizt\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.17\cores\arduino/WString.h \
+ C:\Users\azizt\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.17\cores\arduino/HardwareSerial.h \
+ C:\Users\azizt\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.17\cores\arduino/Stream.h \
+ C:\Users\azizt\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.17\cores\arduino/Print.h \
+ C:\Users\azizt\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.17\cores\arduino/Printable.h \
+ C:\Users\azizt\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.17\cores\arduino/USBAPI.h \
+ C:\Users\azizt\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.17\cores\arduino/Arduino.h \
+ C:\Users\azizt\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.17\variants\mega/pins_arduino.h \
+ C:\Users\azizt\AppData\Local\Temp\VMBuilds\rc_car_main\mega_atmega2560\Debug\stools.h \
+ D:\Projects\Arduino\libraries\Adafruit-Motor-Shield-library-master/AFMotor.h \
+ C:\Users\azizt\AppData\Local\Temp\VMBuilds\rc_car_main\mega_atmega2560\Debug\adafruit_motor_driver.h \
+ C:\Users\azizt\AppData\Local\Temp\VMBuilds\rc_car_main\mega_atmega2560\Debug\MotorDriver.h \
+ C:\Users\azizt\AppData\Local\Temp\VMBuilds\rc_car_main\mega_atmega2560\Debug\rc_car.h \
+ C:\Users\azizt\AppData\Local\Temp\VMBuilds\rc_car_main\mega_atmega2560\Debug\buzzer.h \
+ D:\Projects\Arduino\libraries\pitches/pitches.h \
+ C:\Users\azizt\AppData\Local\Temp\VMBuilds\rc_car_main\mega_atmega2560\Debug\remote_controller.h \
+ C:\Users\azizt\AppData\Local\Temp\VMBuilds\rc_car_main\mega_atmega2560\Debug\remote_controller_driver.h

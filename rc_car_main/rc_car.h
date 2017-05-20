@@ -38,7 +38,7 @@ namespace Azeesoft
       {
         leftMotor.setSpeed(0);
         rightMotor.setSpeed(0);
-        buzzer.playInitializationSound();
+        //buzzer.playInitializationSound();
         
       }
 

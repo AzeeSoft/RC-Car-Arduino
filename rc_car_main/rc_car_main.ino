@@ -27,7 +27,6 @@ void setup() {
 }
 
 void loop() {
-  testRun2();
   remoteController.updateCar();
   car.run();
 }
@@ -36,6 +35,7 @@ void testRun()
 {
   if(Serial.available()>0){
     String ch = Serial.readStringUntil('\n');
+	
     if(ch=="forward")
     {
       car.setSpeed(255,255);
@@ -59,7 +59,4 @@ void testRun()
   }
 }
 
-void testRun2()
-{
-}
 
