@@ -107,9 +107,6 @@
     </ClInclude>
     <ClInclude Include="__vm\.rc_car_main.vsarduino.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="camera_driver_h.cpp" />
-  </ItemGroup>
   <PropertyGroup>
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>
   </PropertyGroup>
