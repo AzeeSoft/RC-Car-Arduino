@@ -1,63 +1,15 @@
 #include "remote_controller_driver.h"
       
-#define USING_SERIAL Serial1
-#define DATA_SPLITTER_COUNT 2
+//#define USING_SERIAL Serial
+#define USING_SERIAL Serial2
 
 namespace Azeesoft
 {
-  class Analog: public AnalogDriver
-  {
-    private:
-      int angle=0;
-      int strength=0;
-      
-    public:
-      const int MIN_ANGLE=0;
-      const int MAX_ANGLE=360;
-      const int MIN_STRENGTH=0;
-      const int MAX_STRENGTH=100;
-      
-      Analog(): AnalogDriver()
-      {
-        
-      }
-
-      void setAngle(int a)
-      {
-        if(a<MIN_ANGLE)
-          a=MIN_ANGLE;
-        else if(a>MAX_ANGLE)
-          a=MAX_ANGLE;
-
-        angle=a;
-      }
-
-      void setStrength(int s)
-      {
-        if(s<MIN_STRENGTH)
-          s=MIN_STRENGTH;
-        else if(s>MAX_STRENGTH)
-          s=MAX_STRENGTH;
-
-        strength=s;
-      }
-
-      int getAngle() const
-      {
-        return angle;
-      }
-
-      int getStrength() const
-      {
-        return strength;
-      }
-  };
-
   class RemoteController: public RemoteControllerDriver
   {
     private:
-      Analog leftAnalog;
-      Analog rightAnalog;
+      int inputH;
+      int inputV;
     
       String readIncomingData()
       {
@@ -69,76 +21,83 @@ namespace Azeesoft
         return "";
       }
 
-      void updateAnalogs(String data)
+      int getValueFromAngleAndStrength(float angle, int strength, int axis = 0) 
       {
-         String vals[DATA_SPLITTER_COUNT+1];
-         int i=0;
-         int pos=data.indexOf(':');
-         int lastPos=-1;
-         while(pos!=-1){
-          if(i>DATA_SPLITTER_COUNT)
-            break;
-            
-            vals[i]=data.substring(lastPos+1,pos);
-            i++;
-            lastPos=pos;
-            pos=data.indexOf(':',pos+1);
-         }
-
-         if(vals[0]=="AnalogH")
-         {
-//            Serial.println("Starts with AnalogH");
-//            Serial.println(vals[1].toInt());
-            leftAnalog.setAngle(vals[1].toInt());
-            leftAnalog.setStrength(vals[2].toInt());
-            
-//            Serial.println(leftAnalog.getAngle());
-         }
-         else if(vals[0]=="AnalogV")
-         {
-//            Serial.println("Starts with AnalogV");
-            rightAnalog.setAngle(vals[1].toInt());
-            rightAnalog.setStrength(vals[2].toInt());
-         }
-
-          String s="Left Analog: "+leftAnalog.getAngle();
-          s+=" ; "+leftAnalog.getStrength();
-//          Serial.println(leftAnalog.getStrength());
-          s="Right Analog: "+rightAnalog.getAngle();
-          s+=" ; "+rightAnalog.getStrength();
-//          Serial.println(rightAnalog.getStrength());
+          int val = (((axis == 0) ? cos(angle) : sin(angle)) * strength * 255) / 100;
+          return val;
       }
-      
+
+      void decodeInputs(String data, String vals[3]) {
+        int i=0;
+        int pos=data.indexOf(':');
+        int lastPos=-1;
+        while(pos!=-1){
+         if(i>3)
+           break;
+           
+           vals[i]=data.substring(lastPos+1,pos);
+           Serial.println(vals[i]);
+           i++;
+           lastPos=pos;
+           pos=data.indexOf(':',pos+1);
+        }
+      }
+
     public:
       RemoteController(RCCar* rcp): RemoteControllerDriver(rcp)
       {
+        
+      }
+
+      void initialize() 
+      {
         USING_SERIAL.begin(9600);
+        Serial.println("Started RC");
       }
 
       void updateCar()
-      {
+      {          
         String data=readIncomingData();
-//        if(data!="")Serial.println("Incoming Data: "+data);
-//        String data="ABC";
-
+        if(data!="")Serial.println("Incoming Data: "+data);
+        
         if(data.startsWith("AZEE_HANDSHAKE"))
         {
           rc_car_ptr->onRemoteConnectionEstablished();
         }
-        else if(data.startsWith("Analog"))
+        else if(data.startsWith("Drive:"))
         {
-          updateAnalogs(data);
-          double h=cos((PI*leftAnalog.getAngle())/180.0) * leftAnalog.getStrength();
-          double v=sin((PI*rightAnalog.getAngle())/180.0) * rightAnalog.getStrength();
-          rc_car_ptr->updateSpeedFromAnalog(h,v);
+          String vals[3];
+          decodeInputs(data, vals);
+          inputH = vals[1].toInt();
+          inputV = vals[2].toInt();
+        
+          rc_car_ptr->updateSpeed(inputH,inputV);
 
-//          Serial.println(h);
-//          Serial.println(v);
+          Serial.println(inputH);
+          Serial.println(inputV);
         }
-
-        if(data!="")
-          Serial.println("");
+        else if(data.startsWith("AnalogH:"))
+        {
+          String vals[3];
+          decodeInputs(data, vals);
+          float angle = (vals[1].toInt() * 71) / 4068.0;
+          inputH = getValueFromAngleAndStrength(angle, vals[2].toInt(), 0);
+          
+          Serial.println(inputH);
+          Serial.println(inputV);
+          rc_car_ptr->updateSpeed(inputH,inputV);
+        }
+        else if(data.startsWith("AnalogV:")) 
+        {
+          String vals[3];
+          decodeInputs(data, vals);
+          float angle = (vals[1].toInt() * 71) / 4068.0;
+          inputV = getValueFromAngleAndStrength(angle, vals[2].toInt(), 1);
+          
+          Serial.println(inputH);
+          Serial.println(inputV);
+          rc_car_ptr->updateSpeed(inputH,inputV);
+        }
       }
   };
 };
-

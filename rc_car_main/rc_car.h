@@ -3,10 +3,11 @@
 #define MIN_MOTOR_SPEED -255
 #define MAX_MOTOR_SPEED 255
 #define SPEED_CORRECTION 190
-#define MIN_WORKING_SPEED 200
+//#define MIN_WORKING_SPEED 200
+#define MIN_WORKING_SPEED 0
 
-#define LMOTOR_FWD_DEVIANCE 20
-#define LMOTOR_BWD_DEVIANCE -10
+#define LMOTOR_FWD_DEVIANCE 0
+#define LMOTOR_BWD_DEVIANCE 0
 
 #define BUZZER_PIN 53
 
@@ -38,7 +39,7 @@ namespace Azeesoft
       {
         leftMotor.setSpeed(0);
         rightMotor.setSpeed(0);
-        //buzzer.playInitializationSound();
+        buzzer.playInitializationSound();
         
       }
 
@@ -87,18 +88,18 @@ namespace Azeesoft
         return rightSpeed;
       }
 
-      void updateSpeedFromAnalog(double h, double v)
+      void updateSpeed(double h, double v)
       {
         h=(h*(MAX_MOTOR_SPEED - SPEED_CORRECTION))/100;
         v=(v*(MAX_MOTOR_SPEED - SPEED_CORRECTION))/100;
         if(v!=0)
          v+=(SPEED_CORRECTION*(getSign(v)));
     
-        if(fabs(v)>MIN_WORKING_SPEED)
-          v=255*(getSign(v));
+//        if(fabs(v)>MIN_WORKING_SPEED)
+//          v=255*(getSign(v));
 
-        int lSpeed=(int)v;
-        int rSpeed=(int)v;
+        int lSpeed=int(v);
+        int rSpeed=int(v);
 
 
         Serial.println(v);
@@ -108,7 +109,7 @@ namespace Azeesoft
           Serial.println("Adding Horizontal Speed Correction");
         }
 
-        int turnFactor = (int)(fabs(h)/1);  // /2
+        int turnFactor = int(fabs(h)/1);  // /2
 
         if(v<0)
           turnFactor*=-1;
@@ -124,14 +125,14 @@ namespace Azeesoft
           rSpeed-=turnFactor;
         }
 
-//        Serial.println(lSpeed);
-//        Serial.println(rSpeed);
+        Serial.println(lSpeed);
+        Serial.println(rSpeed);
 
         setSpeed(lSpeed, rSpeed);
         if(leftSpeed!=0 || rightSpeed!=0)
         {
-          Serial.println(leftSpeed);
-          Serial.println(rightSpeed);
+//          Serial.println(leftSpeed);
+//          Serial.println(rightSpeed);
         }
       }
 
@@ -141,7 +142,6 @@ namespace Azeesoft
        */
        void run()
        {
-        
         leftMotor.setSpeed(leftSpeed);
         rightMotor.setSpeed(rightSpeed);
        }

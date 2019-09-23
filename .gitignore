@@ -1,0 +1,6 @@
+rc_car_main/.vs/
+rc_car_main/.vs/rc_car_main/v14/
+rc_car_main/Debug/
+
+*.suo
+*.vcxproj.user
